@@ -71,7 +71,7 @@ public class LootTableParser {
         return true;
     }
 
-    public void registerServer(ServerPlayerEntity player){
+    public void registerServer(List<ServerPlayerEntity> players){
         if (!hasPostProcessed()){
             EMILoot.LOGGER.warn("Post-processing not completed for some reason, completing now...");
             for (PostProcessor process: PostProcessor.values()){
@@ -79,17 +79,19 @@ public class LootTableParser {
             }
             EMILoot.LOGGER.warn("Post-processing complete!");
         }
-        PacketSender.s2c(player).send(CLEAR_LOOTS, new PacketByteBuf(Unpooled.buffer()));
-        if (EMILoot.config.parseChestLoot)
-            chestSenders.forEach((id,chestSender) -> chestSender.send(player));
-        if (EMILoot.config.parseBlockLoot)
-            blockSenders.forEach((id,blockSender) -> blockSender.send(player));
-        if (EMILoot.config.parseMobLoot)
-            mobSenders.forEach((id,mobSender) -> mobSender.send(player));
-        if (EMILoot.config.parseGameplayLoot)
-            gameplaySenders.forEach((id,gameplaySender) -> gameplaySender.send(player));
-        if (EMILoot.config.parseArchaeologyLoot)
-            archaeologySenders.forEach((id, archaeologySender) -> archaeologySender.send(player));
+        players.forEach(player -> {
+            PacketSender.s2c(player).send(CLEAR_LOOTS, new PacketByteBuf(Unpooled.buffer()));
+            if (EMILoot.config.parseChestLoot)
+                chestSenders.forEach((id,chestSender) -> chestSender.send(player));
+            if (EMILoot.config.parseBlockLoot)
+                blockSenders.forEach((id,blockSender) -> blockSender.send(player));
+            if (EMILoot.config.parseMobLoot)
+                mobSenders.forEach((id,mobSender) -> mobSender.send(player));
+            if (EMILoot.config.parseGameplayLoot)
+                gameplaySenders.forEach((id,gameplaySender) -> gameplaySender.send(player));
+            if (EMILoot.config.parseArchaeologyLoot)
+                archaeologySenders.forEach((id, archaeologySender) -> archaeologySender.send(player));
+        });
     }
 
     public static void parseLootTables(LootManager manager, Map<LootDataKey<?>, ?> tables) {

@@ -4,6 +4,7 @@ import fzzyhmstrs.emi_loot.EMILoot;
 import fzzyhmstrs.emi_loot.forge.events.EMILootClientForgeEvents;
 import fzzyhmstrs.emi_loot.forge.events.EMILootClientModEvents;
 import fzzyhmstrs.emi_loot.forge.events.EMILootForgeEvents;
+import fzzyhmstrs.emi_loot.forge.events.EMILootModEvents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -18,7 +19,7 @@ public class EMILootForge {
         //EventBuses.registerModEventBus(EMILoot.MOD_ID, MOD_BUS);
 
         MinecraftForge.EVENT_BUS.register(new EMILootForgeEvents());
-        //MOD_BUS.register(new EMILootModEvents());
+        MOD_BUS.register(new EMILootModEvents());
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new EMILootClientForgeEvents());
